@@ -15,12 +15,12 @@ router.get('', async (req,res)=>{
     let perPage = 10;
     let page = req.query.page || 1;
 
-    const data = await Post.aggregate( { $sort: { createdAt: -1}})
+    const data = await Post.aggregate( [{ $sort: { createdAt: -1}}])
     .skip(perPage * page - perPage)
     .limit(perPage)
     .exec();
 
-    const count = await Post.count();
+    const count = await Post.countDocuments();
     const nextPage = parseInt(page)+1;
     const hasNextPage = nextPage <= Math.ceil(count / perPage);
     
